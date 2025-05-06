@@ -15,41 +15,9 @@ sudo apt install -y git
 git clone https://github.com/lime-nex/cgm_wecker.git
 cd cgm_wecker
 ```
-
-* Edit the configuration:
-```
-nano dexpy.json
-```
-
-Configuration example:
-* Here you will only need to set the first one that reads USB_RECEIVER to true.
-```
-{
-  "USB_RECEIVER": true,
-  "DEXCOM_SHARE_SERVER": "eu",
-  "DEXCOM_SHARE_USERNAME": "username",
-  "DEXCOM_SHARE_PASSWORD": "password",
-  "MQTT_SERVER": "mqtt.myserver.example",
-  "MQTT_PORT": 1883,
-  "MQTT_SSL": false,
-  "MQTT_CLIENTID": "dexpy-mqtt-client",
-  "MQTT_TOPIC": "cgm",
-  "INFLUXDB_SERVER": "influxdb.myserver.example",
-  "INFLUXDB_PORT": 8086,
-  "INFLUXDB_SSL": false,
-  "INFLUXDB_SSL_VERIFY": false,
-  "INFLUXDB_USERNAME": "username",
-  "INFLUXDB_PASSWORD": "password",
-  "INFLUXDB_DATABASE": "dexpy",
-  "INFLUXDB_MEASUREMENT": "bg",
-  "NIGHTSCOUT_URL": "https://nightscout.myserver.example",
-  "NIGHTSCOUT_SECRET": null,
-  "NIGHTSCOUT_TOKEN": "ns-yadayadayada"
-}
-```
-
 * Run the install script that registers the usb device driver, downloads dependencies and starts dexpy as a systemd service
 ```
+chmod +x install.sh
 sudo ./install.sh
 ```
 
@@ -58,7 +26,7 @@ sudo ./install.sh
 
 ### Then run this command to start the script###:
 ```
-venv/bin/python scrOpt.py
+venv/bin/python start_dexcom.py
 ```
 # Acknowledgements
 
