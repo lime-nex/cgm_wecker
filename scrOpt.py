@@ -10,9 +10,9 @@ import os
 
 pygame.init()
 stop_alarm = threading.Event()
-username = "Lennart2007"
-password = "vonHaacke98!"
-region = "ous"
+username = "enter-username-here(or whatever you use to login to dexcom)" #example: username = "exampleusername"
+password = "enter-password-here" # example: password = "safepassword1234"
+region = "either enter (us) for Amerika, (ous) for out of us and (jp) for japan" #example: region = "ous" 
 dexcom = Dexcom(username=username, password=password, region=region)
 LOW_THRESHOLD = 80
 werte = []
