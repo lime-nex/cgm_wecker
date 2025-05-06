@@ -1,0 +1,16 @@
+
+[Unit]
+Description=Dexpy
+After=network.target
+
+[Service]
+ExecStart=/home/nexus/Desktop/Pi/dexpy/venv/bin/python3 dexpy.py --CONFIGURATION dexpy.json
+WorkingDirectory=/home/nexus/Desktop/Pi/dexpy
+StandardOutput=inherit
+StandardError=inherit
+TimeoutStopSec=30
+Restart=on-abort
+User=nexus
+
+[Install]
+WantedBy=multi-user.target
