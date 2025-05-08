@@ -15,7 +15,46 @@ sudo apt install -y git
 git clone https://github.com/lime-nex/cgm_wecker.git
 cd cgm_wecker
 ```
-* Run the install script that registers the usb device driver, downloads dependencies and starts dexpy as a systemd service
+* Open the Filemanager and locate the folder cgm_wecker.
+* Locate the file scrOpt.py, open it and you will see this.
+```
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from pydexcom import Dexcom
+from datetime import datetime
+import pygame
+import threading
+import random
+import time
+import os
+
+early_pass = True
+
+while early_pass:
+    try:
+        pygame.init()
+        stop_alarm = threading.Event()
+        sername = "enter-username-here(or whatever you use to login to dexcom)" #example: username = "exampleusername"
+        password = "enter-password-here" # example: password = "safepassword1234"
+        region = "either enter (us) for Amerika, (ous) for out of us and (jp) for japan" #example: region = "ous" 
+        dexcom = Dexcom(username=username, password=password, region=region)
+        reading = dexcom.get_current_glucose_reading()
+        LOW_THRESHOLD = 200
+        werte = []
+        zeiten = []
+        Sound = ['Sound/Alarm1.mp3','Sound/Alarm2.mp3','Sound/Alarm3.mp3','Sound/Alarm4.mp3','Sound/Alarm5.mp3']
+        COOLDOWN_SECONDS = 1500  # z.B. 5 Minuten Cooldown
+        last_alarm_time = 0
+        first_b = True
+        last_wert_i = None
+        differenz_i = None
+        early_pass = False
+    except:
+        print("Cannot initiate script. This may be a problem with your login information or your internet connection. To be sure please check both.")
+        time.sleep(5)
+```
+* You will no edit the three variables 
+* Run the install script that registers the usb device driver, downloads dependencies and starts dexpy as a systemd service.
 ```
 chmod +x start.sh
 sudo ./start.sh
