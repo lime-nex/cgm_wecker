@@ -53,7 +53,8 @@ while early_pass:
         print("Cannot initiate script. This may be a problem with your login information or your internet connection. To be sure please check both.")
         time.sleep(5)
 ```
-* You will no edit the three variables 
+* You will no edit the three variables called username, password and region acording to the examples provided in the code behind each variable.
+* Then you will save the file and close it.
 * Run the install script that registers the usb device driver, downloads dependencies and starts dexpy as a systemd service.
 ```
 chmod +x start.sh
