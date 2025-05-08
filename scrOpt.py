@@ -14,9 +14,9 @@ while early_pass:
     try:
         pygame.init()
         stop_alarm = threading.Event()
-        username = "Lennart2007"
-        password = "vonHaacke98!"
-        region = "ous"
+        sername = "enter-username-here(or whatever you use to login to dexcom)" #example: username = "exampleusername"
+        password = "enter-password-here" # example: password = "safepassword1234"
+        region = "either enter (us) for Amerika, (ous) for out of us and (jp) for japan" #example: region = "ous" 
         dexcom = Dexcom(username=username, password=password, region=region)
         reading = dexcom.get_current_glucose_reading()
         LOW_THRESHOLD = 200
