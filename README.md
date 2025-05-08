@@ -15,7 +15,7 @@ sudo apt install -y git
 git clone https://github.com/lime-nex/cgm_wecker.git
 cd cgm_wecker
 ```
-* Open the Filemanager and locate the folder cgm_wecker.
+* Leave the terminal open in the background and open the Filemanager and locate the folder cgm_wecker.
 * Locate the file scrOpt.py, open it and you will see this.
 ```
 import matplotlib.pyplot as plt
@@ -55,6 +55,7 @@ while early_pass:
 ```
 * You will no edit the three variables called username, password and region acording to the examples provided in the code behind each variable.
 * Then you will save the file and close it.
+* Return to the still in the background open terminal.
 * Run the install script that registers the usb device driver, downloads dependencies and starts dexpy as a systemd service.
 ```
 chmod +x start.sh
