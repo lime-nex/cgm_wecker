@@ -4,8 +4,8 @@ This project aims to help people who don't wake up from their bloodsugar alarms 
 * Download cgm_wecker to your rasberry pi 
 For that you will require a rasberry pi that is already setup and configured.
 Here are links to tutorials on how to setup your rasberry pi:
-Rasberry Pi 5: https://youtu.be/ykTlNf1TXO0?si=05Z-oay19oRd1Q2M
-Rasberry Pi 4 or lower: https://youtu.be/y45hsd2AOpw?si=gC5QivFmHwykAVZ9
+[Rasberry Pi 5](https://youtu.be/ykTlNf1TXO0?si=05Z-oay19oRd1Q2M)
+[Rasberry Pi 4 or lower](https://youtu.be/y45hsd2AOpw?si=gC5QivFmHwykAVZ9) 
 Note: I can at this time only confirm that this is tested and works on a rasberry pi 5 although other rasberry pis like the rasberry pi 4 should be fine aswell.
 
 * The first step is to open the terminal on the rasberry pi.
@@ -17,18 +17,21 @@ cd cgm_wecker
 ```
 * Run the install script that registers the usb device driver, downloads dependencies and starts dexpy as a systemd service
 ```
-chmod +x install.sh
-sudo ./install.sh
+chmod +x start.sh
+sudo ./start.sh
 ```
+*The script should install everything needed and start the script which will prompt you to type in o and enter for online mode or to just wait 20 seconds and start the offline script.#
 
-### Reading from Dexcom Receiver via USB
-**USB_RECEIVER**: _true_ to enable reading from the receiver, otherwise _false_<br/>
+### The next time you want to start the script only run these two commands:
+```
+cd cgm_wecker
+sudo ./start.sh
+```
+if you have any problems try to google your way through the problem although if you can't fix it yourself you can contact me on my [discord server](https://discord.gg/MetPYyWMHx) for this project. (I am still a student at the moment so I wont always have time to help out everyone.)
 
-### Then run this command to start the script###:
-```
-venv/bin/python start_dexcom.py
-```
 # Acknowledgements
+
+Big thanks to [winemug](https://github.com/winemug) for his dexpy project which helped me greatly and is a big part of this project. He was so kind as to allow me to fork his project. For the interaction of the online script with the dexcom api credits go to the [pydexcom](https://github.com/gagebenne/pydexcom) project by gagebenne.
 
 Dexcom Share protocol is implemented according to the [reverse engineering](https://gist.github.com/StephenBlackWasAlreadyTaken/adb0525344bedade1e25) performed by github user [StephenBlackWasAlreadyTaken](https://gist.github.com/StephenBlackWasAlreadyTaken)
 
