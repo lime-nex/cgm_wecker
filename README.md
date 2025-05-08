@@ -4,8 +4,8 @@ This project aims to help people who don't wake up from their bloodsugar alarms 
 * Download cgm_wecker to your rasberry pi 
 For that you will require a rasberry pi that is already setup and configured.
 Here are links to tutorials on how to setup your rasberry pi: 
-* [Rasberry Pi 5](https://youtu.be/ykTlNf1TXO0?si=05Z-oay19oRd1Q2M) 
-* [Rasberry Pi 4 or lower](https://youtu.be/y45hsd2AOpw?si=gC5QivFmHwykAVZ9)  
+* [Rasberry Pi 5 Tutorial](https://youtu.be/ykTlNf1TXO0?si=05Z-oay19oRd1Q2M) 
+* [Rasberry Pi 4 or lower Tutorial](https://youtu.be/y45hsd2AOpw?si=gC5QivFmHwykAVZ9)  
 * Note: I can at this time only confirm that this is tested and works on a rasberry pi 5 although other rasberry pis like the rasberry pi 4 should be fine aswell.
 
 * The first step is to open the terminal on the rasberry pi.
