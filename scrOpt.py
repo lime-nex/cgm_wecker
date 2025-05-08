@@ -98,7 +98,7 @@ def update(frame):
         plt.xticks(rotation=75)
         plt.tight_layout()
         current_time = time.time()
-        prediction(30)
+        prediction(wert)
         if wert < LOW_THRESHOLD and (current_time - last_alarm_time > COOLDOWN_SECONDS):
             last_alarm_time = current_time
             set_alarm()
