@@ -61,7 +61,7 @@ class DexcomReceiverSession():
             save_state(True)
             import pygame
             pygame.init()
-            Sound_last = ['/home/nexus/Desktop/Pi/Desktop/Sound/Activation.mp3']
+            Sound_last = ['Sound/Activation.mp3']
             my_sound_last = pygame.mixer.Sound(random.choice(Sound_last))
             my_sound_last.play()
             return False
