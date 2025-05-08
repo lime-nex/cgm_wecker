@@ -19,7 +19,7 @@ while early_pass:
         region = "either enter (us) for Amerika, (ous) for out of us and (jp) for japan" #example: region = "ous" 
         dexcom = Dexcom(username=username, password=password, region=region)
         reading = dexcom.get_current_glucose_reading()
-        LOW_THRESHOLD = 200
+        LOW_THRESHOLD = 80
         werte = []
         zeiten = []
         Sound = ['Sound/Alarm1.mp3','Sound/Alarm2.mp3','Sound/Alarm3.mp3','Sound/Alarm4.mp3','Sound/Alarm5.mp3']
