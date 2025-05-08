@@ -8,21 +8,30 @@ import random
 import time
 import os
 
-pygame.init()
-stop_alarm = threading.Event()
-username = "enter-username-here(or whatever you use to login to dexcom)" #example: username = "exampleusername"
-password = "enter-password-here" # example: password = "safepassword1234"
-region = "either enter (us) for Amerika, (ous) for out of us and (jp) for japan" #example: region = "ous" 
-dexcom = Dexcom(username=username, password=password, region=region)
-LOW_THRESHOLD = 80
-werte = []
-zeiten = []
-Sound = ['Sound/Alarm1.mp3','Sound/Alarm2.mp3','Sound/Alarm3.mp3','Sound/Alarm4.mp3','Sound/Alarm5.mp3']
-COOLDOWN_SECONDS = 1500  # z.B. 5 Minuten Cooldown
-last_alarm_time = 0
-first_b = True
-last_wert_i = None
-differenz_i = None
+early_pass = True
+
+while early_pass:
+    try:
+        pygame.init()
+        stop_alarm = threading.Event()
+        username = "Lennart2007"
+        password = "vonHaacke98!"
+        region = "ous"
+        dexcom = Dexcom(username=username, password=password, region=region)
+        reading = dexcom.get_current_glucose_reading()
+        LOW_THRESHOLD = 200
+        werte = []
+        zeiten = []
+        Sound = ['Sound/Alarm1.mp3','Sound/Alarm2.mp3','Sound/Alarm3.mp3','Sound/Alarm4.mp3','Sound/Alarm5.mp3']
+        COOLDOWN_SECONDS = 1500  # z.B. 5 Minuten Cooldown
+        last_alarm_time = 0
+        first_b = True
+        last_wert_i = None
+        differenz_i = None
+        early_pass = False
+    except:
+        print("Cannot initiate script. This may be a problem with your login information or your internet connection. To be sure please check both.")
+        time.sleep(5)
 
 def prediction(wert):
     global last_alarm_time
@@ -42,7 +51,7 @@ def prediction(wert):
                     last_alarm_time = current_time
                     set_alarm()
                 elif prediction_wert_i < LOW_THRESHOLD and i > 1:
-                    print(f"[{zeit}] Warnung: Blutzucker könnte innerhalb der nächsten {i} Werte unter {LOW_THRESHOLD} sinken")
+                    print(f"[{zeit}] Warning: In the next {i} values your bloodsugar might fall under {LOW_THRESHOLD}")
         last_wert_i = wert
 
 def play_alarm():
@@ -61,15 +70,15 @@ def math_problem():
     correct_answer = a * b
     while True:
         try:
-            user_answer = int(input(f"Was ist {a} × {b}? "))
+            user_answer = int(input(f"What is {a} × {b}? "))
             if user_answer == correct_answer:
-                print("Richtig! Wecker wird gestoppt.")
+                print("Correct. The alarm will now be stopped for",COOLDOWN_SECONDS/60,"minutes.")
                 stop_alarm.set()
                 break
             else:
-                print("Falsch! Versuche es noch einmal.")
+                print("Wrong! Try again.")
         except ValueError:
-            print("Bitte eine gültige Zahl eingeben!")
+            print("Please enter a valid number!")
     print("Paused Alarm")
 def set_alarm():
     stop_alarm.clear()
@@ -92,7 +101,7 @@ def update(frame):
             farbe = 'red' if werte[i] < LOW_THRESHOLD else 'blue'
             ax.plot(x_vals, y_vals, color=farbe, linewidth=2)
         ax.set_title("Live CGM Werte")
-        ax.set_xlabel("Zeit")
+        ax.set_xlabel("Time")
         ax.set_ylabel("Glukose (mg/dL)")
         ax.grid(True)
         plt.xticks(rotation=75)
@@ -102,18 +111,18 @@ def update(frame):
         if wert < LOW_THRESHOLD and (current_time - last_alarm_time > COOLDOWN_SECONDS):
             last_alarm_time = current_time
             set_alarm()
-    except Exception as e:
-        print(f"[{zeit}] Fehler beim Lesen der Daten:", e)
+    except:
+        print("[{zeit}] Error reading Data. Your internet may have disconnected.")
 
 if __name__ == "__main__":
     fig, ax = plt.subplots()
     ani = animation.FuncAnimation(fig, update, interval=300000)  # 5 Minuten = 300000 ms
     plt.show()
     datum = datetime.now().strftime("%Y-%m-%d")
-    filename = f"/home/nexus/Desktop/Pi/Desktop/CGM Daten/cgm_diagramm_{datum}.png"
+    filename = f"CGM Daten/cgm_diagramm_{datum}.png"
     counter = 1
     while os.path.exists(filename):
-        filename = f"/home/nexus/Desktop/Pi/Desktop/CGM Daten/cgm_diagramm_{datum}_v{counter}.png"
+        filename = f"CGM Daten/cgm_diagramm_{datum}_v{counter}.png"
         counter += 1
     fig.savefig(filename)
-    print(f"Diagramm gespeichert als: {filename}")
+    print(f"Diagramm saved as: {filename}")
