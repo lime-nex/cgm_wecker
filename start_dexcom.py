@@ -3,10 +3,10 @@ import threading
 
 # Jetzt korrekt zugeordnet:
 # Wenn 'o' eingegeben wird → scrOpt.py
-command_if_o = "lxterminal -e 'venv/bin/python scrOpt.py'"
+command_if_o = "lxterminal -e 'cgm_wecker/venv/bin/python scrOpt.py'"
 
 # Wenn NICHT 'o' eingegeben wird → dexpy.py
-command_else = "lxterminal -e 'venv/bin/python dexpy.py'"
+command_else = "lxterminal -e 'cgm_wecker/venv/bin/python dexpy.py'"
 
 user_input = None
 
