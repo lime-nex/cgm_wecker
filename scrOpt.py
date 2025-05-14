@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from pydexcom import Dexcom
 from datetime import datetime
+from pathlib import Path
 import pygame
 import threading
 import random
@@ -9,6 +10,7 @@ import time
 import os
 
 early_pass = True
+BASE_DIR = Path(__file__).resolve().parent
 
 while early_pass:
     try:
@@ -22,7 +24,7 @@ while early_pass:
         LOW_THRESHOLD = 80
         werte = []
         zeiten = []
-        Sound = ['Sound/Alarm1.mp3','Sound/Alarm2.mp3','Sound/Alarm3.mp3','Sound/Alarm4.mp3','Sound/Alarm5.mp3']
+        Sound = [BASE_DIR / 'Sound' / 'Alarm1.mp3', BASE_DIR / 'Sound' / 'Alarm2.mp3', BASE_DIR / 'Sound' / 'Alarm3.mp3', BASE_DIR / 'Sound' / 'Alarm4.mp3', BASE_DIR / 'Sound' / 'Alarm5.mp3']
         COOLDOWN_SECONDS = 1500  # z.B. 5 Minuten Cooldown
         last_alarm_time = 0
         first_b = True
