@@ -9,6 +9,7 @@ from usbreceiver import constants
 from usbreceiver.readdata import Dexcom
 
 from save_state import save_state, load_state
+from pathlib import Path
 
 class DexcomReceiverSession():
     def __init__(self, callback, usb_reset_cmd = None):
@@ -61,7 +62,7 @@ class DexcomReceiverSession():
             save_state(True)
             import pygame
             pygame.init()
-            Sound_last = ['Sound/Activation.mp3']
+            Sound_last = [Base_DIR / 'Sound' / 'Deactivation.mp3']
             my_sound_last = pygame.mixer.Sound(random.choice(Sound_last))
             my_sound_last.play()
             return False

@@ -21,6 +21,7 @@ import os
 import distro
 import datetime
 from save_state import save_state, load_state
+from pathlib import Path
 
 with open('text.txt', 'w') as file:
     pass  # Nichts reinschreiben → Datei ist leer
@@ -200,8 +201,8 @@ class DexPy:
                 
                 pygame.init()
                 stop_alarm = threading.Event()
-                Sound = ['Sound/Alarm1.mp3','Sound/Alarm2.mp3','Sound/Alarm3.mp3','Sound/Alarm4.mp3','Sound/Alarm5.mp3']
-                Sound_first = ['Sound/Activation.mp3']
+                Sound = [BASE_DIR / 'Sound' / 'Alarm1.mp3', BASE_DIR / 'Sound' / 'Alarm2.mp3', BASE_DIR / 'Sound' / 'Alarm3.mp3', BASE_DIR / 'Sound' / 'Alarm4.mp3', BASE_DIR / 'Sound' / 'Alarm5.mp3']
+                Sound_first = [Base_DIR / 'Sound' / 'Activation.mp3']
                 
                 def prediction(wert):
                     global last_alarm_time
