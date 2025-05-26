@@ -8,3 +8,5 @@ pygame
 datetime
 matplotlib
 pydexcom
+pandas
+dotenv

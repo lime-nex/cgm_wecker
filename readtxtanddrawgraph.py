@@ -2,7 +2,10 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import matplotlib.dates as mdates
 import os
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent
+filenametxt = BASE_DIR / 'text.txt'
 # Schwellenwert für niedrigen Blutzucker
 LOW_THRESHOLD = 80
 
@@ -10,7 +13,7 @@ werte = []
 zeiten = []
 
 # Datei einlesen
-with open("text.txt", "r") as file:
+with open(filenametxt, "r") as file:
     for line in file:
         if '-' in line:
             teil = line.strip().split(' - ')
@@ -45,10 +48,10 @@ ax.grid(True)
 plt.tight_layout()
 plt.show()
 datum = datetime.now().strftime("%Y-%m-%d")
-filename = f"CGM Daten/cgm_diagramm_{datum}.png"
+filename = f"/home/nexus/Desktop/Pi/Desktop/CGM Daten/cgm_diagramm_{datum}.png"
 counter = 1
 while os.path.exists(filename):
-    filename = f"CGM Daten/cgm_diagramm_{datum}_v{counter}.png"
+    filename = f"/home/nexus/Desktop/Pi/Desktop/CGM Daten/cgm_diagramm_{datum}_v{counter}.png"
     counter += 1
 fig.savefig(filename)
 print(f"Diagramm gespeichert als: {filename}")

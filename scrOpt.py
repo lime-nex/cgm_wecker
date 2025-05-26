@@ -3,6 +3,7 @@ import matplotlib.animation as animation
 from pydexcom import Dexcom
 from datetime import datetime
 from pathlib import Path
+from config_handler import load_config, load_config_constants
 import pygame
 import threading
 import random
@@ -11,51 +12,57 @@ import os
 
 early_pass = True
 BASE_DIR = Path(__file__).resolve().parent
+last_alarm_time = 0
+username, password, region = load_config()
+LOW_THRESHOLD, COOLDOWN_MINUTES = load_config_constants()
+COOLDOWN_SECONDS = COOLDOWN_MINUTES * 60
 
 while early_pass:
     try:
         pygame.init()
         stop_alarm = threading.Event()
-        username = "enter-username-here(or whatever you use to login to dexcom)" #example: username = "exampleusername"
-        password = "enter-password-here" # example: password = "safepassword1234"
-        region = "either enter (us) for Amerika, (ous) for out of us and (jp) for japan" #example: region = "ous" 
         dexcom = Dexcom(username=username, password=password, region=region)
         reading = dexcom.get_current_glucose_reading()
-        LOW_THRESHOLD = 80
         werte = []
         zeiten = []
         Sound = [BASE_DIR / 'Sound' / 'Alarm1.mp3', BASE_DIR / 'Sound' / 'Alarm2.mp3', BASE_DIR / 'Sound' / 'Alarm3.mp3', BASE_DIR / 'Sound' / 'Alarm4.mp3', BASE_DIR / 'Sound' / 'Alarm5.mp3']
-        COOLDOWN_SECONDS = 1500  # z.B. 5 Minuten Cooldown
         last_alarm_time = 0
         first_b = True
-        last_wert_i = None
-        differenz_i = None
+        last_wert_i = 1
+        differenz_i = 1
+        print("Earlypass completed")
         early_pass = False
     except:
         print("Cannot initiate script. This may be a problem with your login information or your internet connection. To be sure please check both.")
         time.sleep(5)
 
-def prediction(wert):
+def prediction(wert, current_time):
     global last_alarm_time
     global first_b
     global last_wert_i
     global differenz_i
-    zeit = datetime.now().strftime("%H:%M:%S")
-    if first_b:
-        first_b = False
-        last_wert_i = wert
-    else:
-        differenz_i = last_wert_i - wert
-        if differenz_i > 0:
-            for i in range(1,3):
-                prediction_wert_i = wert - differenz_i
-                if prediction_wert_i < LOW_THRESHOLD and i == 1 and (current_time - last_alarm_time > COOLDOWN_SECONDS):
-                    last_alarm_time = current_time
-                    set_alarm()
-                elif prediction_wert_i < LOW_THRESHOLD and i > 1:
-                    print(f"[{zeit}] Warning: In the next {i} values your bloodsugar might fall under {LOW_THRESHOLD}")
-        last_wert_i = wert
-
+    global LOW_THRESHOLD
+    global COOLDOWN_SECONDS
+    try:
+        prediction_wert_i = 1
+        zeit = datetime.now().strftime("%H:%M:%S")
+        if first_b:
+            first_b = False
+            last_wert_i = wert
+        else:
+            differenz_i = last_wert_i - wert
+            if differenz_i > 0:
+                for i in range(1,3):
+                    prediction_wert_i = wert - differenz_i
+                    if prediction_wert_i < LOW_THRESHOLD and i == 1 and (current_time - last_alarm_time > COOLDOWN_SECONDS):
+                        last_alarm_time = current_time
+                        set_alarm()
+                    elif prediction_wert_i < LOW_THRESHOLD and i > 1:
+                        print(f"[{zeit}] Warning: In the next {i} values your bloodsugar might fall under {LOW_THRESHOLD}")
+            last_wert_i = wert
+    except:
+        print("Fehler in prediction")
+    
 def play_alarm():
     try:
         my_sound = pygame.mixer.Sound(random.choice(Sound))
@@ -89,6 +96,8 @@ def set_alarm():
 
 def update(frame):
     global last_alarm_time
+    global LOW_THRESHOLD
+    global COOLDOWN_SECONDS
     try:
         reading = dexcom.get_current_glucose_reading()
         wert = reading.value
@@ -109,10 +118,10 @@ def update(frame):
         plt.xticks(rotation=75)
         plt.tight_layout()
         current_time = time.time()
-        prediction(wert)
         if wert < LOW_THRESHOLD and (current_time - last_alarm_time > COOLDOWN_SECONDS):
             last_alarm_time = current_time
             set_alarm()
+        prediction(wert, current_time)
     except:
         print("[{zeit}] Error reading Data. Your internet may have disconnected.")
 
@@ -121,10 +130,10 @@ if __name__ == "__main__":
     ani = animation.FuncAnimation(fig, update, interval=300000)  # 5 Minuten = 300000 ms
     plt.show()
     datum = datetime.now().strftime("%Y-%m-%d")
-    filename = f"CGM Daten/cgm_diagramm_{datum}.png"
+    filename = BASE_DIR / f"CGM Daten/cgm_diagramm_{datum}.png"
     counter = 1
     while os.path.exists(filename):
-        filename = f"CGM Daten/cgm_diagramm_{datum}_v{counter}.png"
+        filename = BASE_DIR / f"CGM Daten/cgm_diagramm_{datum}_v{counter}.png"
         counter += 1
     fig.savefig(filename)
     print(f"Diagramm saved as: {filename}")

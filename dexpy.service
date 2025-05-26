@@ -4,8 +4,8 @@ Description=Dexpy
 After=network.target
 
 [Service]
-ExecStart=/home/nexus/Desktop/Pi/dexpy/venv/bin/python3 dexpy.py --CONFIGURATION dexpy.json
-WorkingDirectory=/home/nexus/Desktop/Pi/dexpy
+ExecStart=/home/nexus/cgm_wecker/venv/bin/python3 dexpy.py --CONFIGURATION dexpy.json
+WorkingDirectory=/home/nexus/cgm_wecker
 StandardOutput=inherit
 StandardError=inherit
 TimeoutStopSec=30

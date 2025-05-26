@@ -23,7 +23,10 @@ import datetime
 from save_state import save_state, load_state
 from pathlib import Path
 
-with open('text.txt', 'w') as file:
+BASE_DIR = Path(__file__).resolve().parent
+filenametxt = BASE_DIR / 'text.txt' 
+
+with open(filenametxt, 'w') as file:
     pass  # Nichts reinschreiben → Datei ist leer
 COOLDOWN_SECONDS = 300  # z.B. 5 Minuten Cooldown
 last_alarm_time = 0
@@ -288,7 +291,7 @@ class DexPy:
                    last_alarm_time = current_time
                    print(gv.value)
                    print("Neuer Wert")
-                   file_graphing = open('text.txt','a')
+                   file_graphing = open(filenametxt, 'a')
                    datum_different = datetime.now().strftime("%H:%M:%S")
                    file_graphing.write(str(gv.value) +' - '+ datum_different+'\n')
                    time.sleep(1)
