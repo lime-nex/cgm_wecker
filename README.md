@@ -15,60 +15,17 @@ sudo apt install -y git
 git clone https://github.com/lime-nex/cgm_wecker.git
 cd cgm_wecker
 ```
-* Leave the terminal open in the background and open the Filemanager and locate the folder cgm_wecker.
-* Locate the file scrOpt.py, open it and you will see this.
-```
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from pydexcom import Dexcom
-from datetime import datetime
-import pygame
-import threading
-import random
-import time
-import os
-
-early_pass = True
-
-while early_pass:
-    try:
-        pygame.init()
-        stop_alarm = threading.Event()
-        sername = "enter-username-here(or whatever you use to login to dexcom)" #example: username = "exampleusername"
-        password = "enter-password-here" # example: password = "safepassword1234"
-        region = "either enter (us) for Amerika, (ous) for out of us and (jp) for japan" #example: region = "ous" 
-        dexcom = Dexcom(username=username, password=password, region=region)
-        reading = dexcom.get_current_glucose_reading()
-        LOW_THRESHOLD = 200
-        werte = []
-        zeiten = []
-        Sound = ['Sound/Alarm1.mp3','Sound/Alarm2.mp3','Sound/Alarm3.mp3','Sound/Alarm4.mp3','Sound/Alarm5.mp3']
-        COOLDOWN_SECONDS = 1500  # z.B. 5 Minuten Cooldown
-        last_alarm_time = 0
-        first_b = True
-        last_wert_i = None
-        differenz_i = None
-        early_pass = False
-    except:
-        print("Cannot initiate script. This may be a problem with your login information or your internet connection. To be sure please check both.")
-        time.sleep(5)
-```
-* You will no edit the three variables called username, password and region acording to the examples provided in the code behind each variable.
-* Then you will save the file and close it.
-* Return to the still in the background open terminal.
-* Run the install script that registers the usb device driver, downloads dependencies and starts dexpy as a systemd service.
+* Run the install script that registers the usb device driver, downloads dependencies and starts the CGM Interface.
 ```
 chmod +x start.sh
 sudo ./start.sh
 ```
-*The script should install everything needed and start the script which will prompt you to type in o and enter for online mode or to just wait 20 seconds and start the offline script.#
+* An Interface should popup where you can configure some settings and login to dexcomshare if you want to use the online service of CGM Wecker.
 
-### The next time you want to start the script only run these two commands:
-```
-cd cgm_wecker
-sudo ./start.sh
-```
-if you have any problems try to google your way through the problem although if you can't fix it yourself you can contact me on my [discord server](https://discord.gg/MetPYyWMHx) for this project. (I am still a student at the moment so I wont always have time to help out everyone.)
+### The next time you want to start the on your desktop there should be a new application called CGM Wecker starten:
+* When you execute it it might ask you if you want to execute it in the terminal or not.
+* This does not matter and you can just do it either way.
+if you have any problems try to google your way through the problem although if you can't fix it yourself you can contact me on my [discord server](https://discord.gg/MetPYyWMHx) for this project. (I am still a student at the moment so I wont always have time to help out everyone if there is demand.)
 
 # Acknowledgements
 
