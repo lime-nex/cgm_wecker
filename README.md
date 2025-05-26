@@ -22,7 +22,8 @@ sudo ./start.sh
 ```
 * An Interface should popup where you can configure some settings and login to dexcomshare if you want to use the online service of CGM Wecker.
 
-### The next time you want to start the on your desktop there should be a new application called CGM Wecker starten:
+### The next time you want to start the programm look on your desktop and you will find a new application called CGM Wecker starten:
+* Execute it!
 * When you execute it it might ask you if you want to execute it in the terminal or not.
 * This does not matter and you can just do it either way.
 if you have any problems try to google your way through the problem although if you can't fix it yourself you can contact me on my [discord server](https://discord.gg/MetPYyWMHx) for this project. (I am still a student at the moment so I wont always have time to help out everyone if there is demand.)
