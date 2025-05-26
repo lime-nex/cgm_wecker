@@ -18,7 +18,7 @@ cd cgm_wecker
 * Run the install script that registers the usb device driver, downloads dependencies and starts the CGM Interface.
 ```
 chmod +x start.sh
-sudo ./start.sh
+./start.sh
 ```
 * An Interface should popup where you can configure some settings and login to dexcomshare if you want to use the online service of CGM Wecker.
 
