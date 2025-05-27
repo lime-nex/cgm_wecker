@@ -205,7 +205,7 @@ class DexPy:
                 pygame.init()
                 stop_alarm = threading.Event()
                 Sound = [BASE_DIR / 'Sound' / 'Alarm1.mp3', BASE_DIR / 'Sound' / 'Alarm2.mp3', BASE_DIR / 'Sound' / 'Alarm3.mp3', BASE_DIR / 'Sound' / 'Alarm4.mp3', BASE_DIR / 'Sound' / 'Alarm5.mp3']
-                Sound_first = [Base_DIR / 'Sound' / 'Activation.mp3']
+                Sound_first = [BASE_DIR / 'Sound' / 'Activation.mp3']
                 
                 def prediction(wert):
                     global last_alarm_time
