@@ -4,5 +4,5 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Starte dein Python-Programm relativ zu diesem Verzeichnis
-python3 "$SCRIPT_DIR/main.py"
+sudo python3 "$SCRIPT_DIR/main.py"
 
