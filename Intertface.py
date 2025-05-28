@@ -98,6 +98,15 @@ class LoginApp:
                 
     def create_login_ui(self):
         self.clear_window()
+        self.auswahl3 = tk.StringVar()
+        
+        style = ttk.Style()
+        style.theme_use("default")
+
+# Style definieren
+        style.configure("Custom.TCombobox",
+                background="white",             # Dropdown-Menü-Hintergrund
+                foreground="black")             # Textfarbe
 
         label = tk.Label(self.root, text="Enter your Dexcom Login or Skip this step. If you skip you won't be able to use the Dexcom-Share capabilities.", font=('Arial'), wraplength=600)
         label.pack(pady=20)
@@ -110,9 +119,10 @@ class LoginApp:
         self.password_entry = tk.Entry(self.root, show="*")
         self.password_entry.pack()
 
-        tk.Label(self.root, text="Region:").pack()
-        self.region_entry = tk.Entry(self.root)
-        self.region_entry.pack()
+        optionen3 = ["jp", "us", "ous"]
+        tk.Label(self.root, text="Region (jp = Japan, us = USA, ous = Out of USA)").pack(pady=(20, 0))
+        combobox = ttk.Combobox(self.root, textvariable=self.auswahl3, values=optionen3, state="readonly", style="Custom.TCombobox")
+        combobox.pack(padx=20, pady=15)
 
         login_button = tk.Button(self.root, text="Login", command=self.try_login)
         login_button.pack(pady=10)
@@ -123,7 +133,7 @@ class LoginApp:
     def try_login(self):
         username = self.username_entry.get()
         password = self.password_entry.get()
-        region = self.region_entry.get()
+        region = self.auswahl3.get()
 
         if check_login(username, password, region):
             self.logged_in = True
