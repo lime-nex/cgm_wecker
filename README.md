@@ -26,6 +26,7 @@ chmod +x start.sh
 * Execute it!
 * When you execute it it might ask you if you want to execute it in the terminal or not.
 * This does not matter and you can just do it either way.
+* If you are unsure or it didn't work for you I have a [tutorial](https://youtu.be/AP5SoBQqZPI).
 if you have any problems try to google your way through the problem although if you can't fix it yourself you can contact me on my [discord server](https://discord.gg/MetPYyWMHx) for this project. (I am still a student at the moment so I wont always have time to help out everyone if there is demand.)
 
 # Acknowledgements
