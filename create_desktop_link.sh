@@ -5,7 +5,7 @@ SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 EXEC_PATH="$SCRIPT_PATH/start_interface.sh"
 ICON_PATH="$SCRIPT_PATH/icons/icon1.png"
 
-cat > "$DESKTOP_PATH/cgm_wecker.desktop" <<EOF
+cat > /tmp/cgm_wecker.desktop <<EOF
 [Desktop Entry]
 Type=Application
 Name=CGM Wecker starten
@@ -14,8 +14,9 @@ Icon=$ICON_PATH
 Terminal=true
 EOF
 
-chmod +x "$DESKTOP_PATH/cgm_wecker.desktop"
+sleep 5s
 
-lxpanelctl restart
+chmod +x /tmp/cgm_wecker.desktop
+mv /tmp/cgm_wecker.desktop "$DESKTOP_PATH/cgm_wecker.desktop"
 
 chmod +x start_interface.sh
