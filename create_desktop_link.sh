@@ -16,4 +16,6 @@ EOF
 
 chmod +x "$DESKTOP_PATH/cgm_wecker.desktop"
 
+lxpanelctl restart
+
 chmod +x start_interface.sh
