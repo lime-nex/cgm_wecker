@@ -33,7 +33,7 @@ class DexcomReceiverSession():
                 self.set_timer(15)
             elif self.read_glucose_values():
                 self.ts_usb_reset = time.time() + 360
-                self.set_timer(30)
+                self.set_timer(150)
             else:
                 if self.usb_reset_cmd is not None:
                     ts_now = time.time()
