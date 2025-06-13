@@ -11,6 +11,8 @@ from usbreceiver.readdata import Dexcom
 from save_state import save_state, load_state
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent
+
 class DexcomReceiverSession():
     def __init__(self, callback, usb_reset_cmd = None):
         self.logger = logging.getLogger('DEXPY')
@@ -33,7 +35,7 @@ class DexcomReceiverSession():
                 self.set_timer(15)
             elif self.read_glucose_values():
                 self.ts_usb_reset = time.time() + 360
-                self.set_timer(150)
+                self.set_timer(30)
             else:
                 if self.usb_reset_cmd is not None:
                     ts_now = time.time()
@@ -62,9 +64,15 @@ class DexcomReceiverSession():
             save_state(True)
             import pygame
             pygame.init()
-            Sound_last = [Base_DIR / 'Sound' / 'Deactivation.mp3']
-            my_sound_last = pygame.mixer.Sound(random.choice(Sound_last))
-            my_sound_last.play()
+            Sound_last = [BASE_DIR / 'Sound' / 'Deactivation.mp3']
+            counter = 1
+            while True:
+                counter = counter + 1
+                my_sound_last = pygame.mixer.Sound(random.choice(Sound_last))
+                my_sound_last.play()
+                time.sleep(3)
+                if counter == 4:
+                    break
             return False
 
     def set_timer(self, seconds):

@@ -21,14 +21,16 @@ import os
 import distro
 import datetime
 from save_state import save_state, load_state
+from config_handler import load_config, load_config_constants
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 filenametxt = BASE_DIR / 'text.txt' 
+LOW_THRESHOLD, COOLDOWN_MINUTES = load_config_constants()
+COOLDOWN_SECONDS = COOLDOWN_MINUTES * 60
 
 with open(filenametxt, 'w') as file:
     pass  # Nichts reinschreiben → Datei ist leer
-COOLDOWN_SECONDS = 300  # z.B. 5 Minuten Cooldown
 last_alarm_time = 0
 save_state(True)
 last_wert_i = 1
@@ -88,8 +90,7 @@ class DexPy:
         if self.args.USB_RECEIVER is not None and self.args.USB_RECEIVER:
             self.dexcom_receiver_session = DexcomReceiverSession(self.glucose_values_received, self.args.USB_RESET_COMMAND)
             if not self.dexcom_receiver_session.ensure_connected():
-                global first_time
-                first_time = True
+                time.sleep(1)
 
 
         for sig in ('HUP', 'INT'):
@@ -123,14 +124,6 @@ class DexPy:
         if self.dexcom_receiver_session is not None:
             self.logger.info("stopping dexcom receiver service")
             self.dexcom_receiver_session.stop_monitoring()
-            global first_time
-            first_time = True
-            import pygame
-            save_state(False)
-            pygame.init()
-            Sound_last = ['Sound/Activation.mp3']
-            my_sound_last = pygame.mixer.Sound(random.choice(Sound_last))
-            my_sound_last.play()
 
         if self.dexcom_share_session is not None:
             self.logger.info("stopping listening on dexcom share server")
@@ -285,28 +278,28 @@ class DexPy:
                        my_sound_first = pygame.mixer.Sound(random.choice(Sound_first))
                        my_sound_first.play()
                        save_state(False)
-                if current_time - last_alarm_time > COOLDOWN_SECONDS:  
-                   wert = gv.value
-                   prediction(wert)
-                   last_alarm_time = current_time
-                   print(gv.value)
-                   print("Neuer Wert")
-                   file_graphing = open(filenametxt, 'a')
-                   datum_different = datetime.now().strftime("%H:%M:%S")
-                   file_graphing.write(str(gv.value) +' - '+ datum_different+'\n')
-                   time.sleep(1)
-                   file_graphing.close()
-                   if gv.value < testnumber:
-                        main()
-                        print("waiting for next Value")
-                        time.sleep(3)
-                        return
-                   else:
-                        print("waiting for next Value")
-                        time.sleep(3)
-                        return
-                else:
+                wert = gv.value
+                prediction(wert)
+                last_alarm_time = current_time
+                print(gv.value)
+                print("Neuer Wert")
+                file_graphing = open(filenametxt, 'a')
+                datum_different = datetime.now().strftime("%H:%M:%S")
+                file_graphing.write(str(gv.value) +' - '+ datum_different+'\n')
+                time.sleep(1)
+                file_graphing.close()
+                if gv.value < LOW_THRESHOLD and (current_time - last_alarm_time > COOLDOWN_SECONDS):
+                    last_alarm_time = current_time
+                    main()
+                    print("waiting for next Value")
+                    time.sleep(3)
                     return
+                else:
+                    print("waiting for next Value")
+                    time.sleep(3)
+                    return
+            else:
+                return
         if self.mqtt_client is not None:
             for gv in new_values:
                 msg = "%d|%s|%s" % (gv.st, gv.trend, gv.value)
