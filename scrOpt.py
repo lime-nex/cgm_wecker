@@ -36,7 +36,7 @@ while early_pass:
         print("Cannot initiate script. This may be a problem with your login information or your internet connection. To be sure please check both.")
         time.sleep(5)
 
-def get_glucose_reading_with_timeout(timeout_seconds=10):
+def get_glucose_reading_with_timeout(timeout_seconds=20):
     result = {}
     def target():
         try:
