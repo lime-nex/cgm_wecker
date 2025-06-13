@@ -14,7 +14,7 @@ Icon=$ICON_PATH
 Terminal=true
 EOF
 
-sleep 5s
+
 
 chmod +x /tmp/cgm_wecker.desktop
 mv /tmp/cgm_wecker.desktop "$DESKTOP_PATH/cgm_wecker.desktop"
