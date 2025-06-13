@@ -36,6 +36,23 @@ while early_pass:
         print("Cannot initiate script. This may be a problem with your login information or your internet connection. To be sure please check both.")
         time.sleep(5)
 
+def get_glucose_reading_with_timeout(timeout_seconds=10):
+    result = {}
+    def target():
+        try:
+            result["reading"] = dexcom.get_current_glucose_reading()
+        except Exception as e:
+            result["error"] = e
+
+    thread = threading.Thread(target=target)
+    thread.start()
+    thread.join(timeout_seconds)
+    if thread.is_alive():
+        raise TimeoutError("Dexcom request timed out.")
+    if "error" in result:
+        raise result["error"]
+    return result["reading"]
+
 def prediction(wert, current_time):
     global last_alarm_time
     global first_b
@@ -99,7 +116,7 @@ def update(frame):
     global LOW_THRESHOLD
     global COOLDOWN_SECONDS
     try:
-        reading = dexcom.get_current_glucose_reading()
+        reading = get_glucose_reading_with_timeout()
         wert = reading.value
         zeit = datetime.now().strftime("%H:%M:%S")
         werte.append(wert)
@@ -123,7 +140,12 @@ def update(frame):
             set_alarm()
         prediction(wert, current_time)
     except:
-        print("[{zeit}] Error reading Data. Your internet may have disconnected.")
+        try:
+            zeit = datetime.now().strftime("%H:%M:%S")
+            print(f"[{zeit}] Error while reading data. Your internet may have disconnected.")
+        except:
+            zeit = "unbekannt"
+            print(f"[{zeit}] Error while reading data. Your internet may have disconnected.")
 
 if __name__ == "__main__":
     fig, ax = plt.subplots()
@@ -137,3 +159,4 @@ if __name__ == "__main__":
         counter += 1
     fig.savefig(filename)
     print(f"Diagramm saved as: {filename}")
+    time.sleep(5)
