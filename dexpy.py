@@ -289,7 +289,7 @@ class DexPy:
                 file_graphing.write(str(gv.value) +' - '+ datum_different+'\n')
                 time.sleep(1)
                 file_graphing.close()
-                if gv.value < LOW_THRESHOLD and (current_time - last_alarm_time > COOLDOWN_SECONDS):
+                if gv.value < LOW_THRESHOLD:
                     last_alarm_time = current_time
                     main()
                     print("waiting for next Value")
