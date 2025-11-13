@@ -1,9 +1,9 @@
 # cgm_wecker
 This project aims to help people who don't wake up from their bloodsugar alarms at nigth. It does this via some python scripts which can either use Data from the Dexcom Share Server (you have to turn on to share your data in the dexcom app) or data from your per cable connected dexcom g6 receiver. When the programm will detect low bloodsugar under your specified amount it will trigger an alarm that will not stop until you answer a simple math question. This of course means that you have to connect some sort of audio device to receive the alarms. In conclusion this project helps to warn you when your bloodsugar is low and can do this both online and offline.
 # Setup
-* Download cgm_wecker to your rasberry pi 
+* In the following I will show you how to download cgm_wecker to your rasberry pi. 
 For that you will require a rasberry pi that is already setup and configured.
-Here are links to tutorials on how to setup your rasberry pi: 
+Here are links to tutorials on how to setup your rasberry pi if you haven't already done so: 
 * [Rasberry Pi 5 Tutorial](https://youtu.be/ykTlNf1TXO0?si=05Z-oay19oRd1Q2M) 
 * [Rasberry Pi 4 or lower Tutorial](https://youtu.be/y45hsd2AOpw?si=gC5QivFmHwykAVZ9)  
 * Note: I can at this time only confirm that this is tested and works on a rasberry pi 5 although other rasberry pis like the rasberry pi 4 should be fine aswell.
