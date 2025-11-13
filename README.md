@@ -11,14 +11,7 @@ Here are links to tutorials on how to setup your rasberry pi:
 * The first step is to open the terminal on the rasberry pi.
 * Next enter these commands
 ```
-sudo apt install -y git
-git clone https://github.com/lime-nex/cgm_wecker.git
-cd cgm_wecker
-```
-* Run the install script that registers the usb device driver, downloads dependencies and starts the CGM Interface.
-```
-chmod +x start.sh
-./start.sh
+curl -sSL https://raw.githubusercontent.com/lime-nex/cgm_wecker/main/installmain.sh | bash
 ```
 * An Interface should popup where you can configure some settings and login to dexcomshare if you want to use the online service of CGM Wecker.
 
