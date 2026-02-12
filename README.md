@@ -9,7 +9,7 @@ Here are links to tutorials on how to setup your rasberry pi if you haven't alre
 * Note: I can at this time only confirm that this is tested and works on a rasberry pi 5 although other rasberry pis like the rasberry pi 4 should be fine aswell.
 
 * The first step is to open the terminal on the rasberry pi.
-* Next enter these commands
+* Next enter this command and execute it.
 ```
 curl -sSL https://raw.githubusercontent.com/lime-nex/cgm_wecker/main/installmain.sh | bash
 ```
