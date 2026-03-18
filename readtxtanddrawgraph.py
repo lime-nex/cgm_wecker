@@ -48,10 +48,10 @@ ax.grid(True)
 plt.tight_layout()
 plt.show()
 datum = datetime.now().strftime("%Y-%m-%d")
-filename = f"/home/nexus/Desktop/Pi/Desktop/CGM Daten/cgm_diagramm_{datum}.png"
+filename = BASE_DIR / f"CGM Daten/cgm_diagramm_{datum}.png"
 counter = 1
 while os.path.exists(filename):
-    filename = f"/home/nexus/Desktop/Pi/Desktop/CGM Daten/cgm_diagramm_{datum}_v{counter}.png"
+    filename = BASE_DIR / f"CGM Daten/cgm_diagramm_{datum}_v{counter}.png"
     counter += 1
 fig.savefig(filename)
 print(f"Diagramm gespeichert als: {filename}")
