@@ -9,10 +9,14 @@ import threading
 import random
 import time
 import os
+import queue
 
 early_pass = True
 BASE_DIR = Path(__file__).resolve().parent
 last_alarm_time = 0
+reading_queue = queue.Queue(maxsize=1)
+worker_running = True
+alarm_active = False
 username, password, region = load_config()
 LOW_THRESHOLD, COOLDOWN_MINUTES = load_config_constants()
 COOLDOWN_SECONDS = COOLDOWN_MINUTES * 60
@@ -36,22 +40,38 @@ while early_pass:
         print("Cannot initiate script. This may be a problem with your login information or your internet connection. To be sure please check both.")
         time.sleep(5)
 
-def get_glucose_reading_with_timeout(timeout_seconds=20):
-    result = {}
-    def target():
+def glucose_worker():
+    global dexcom
+    global worker_running
+    error_counter = 0
+    while worker_running:
         try:
-            result["reading"] = dexcom.get_current_glucose_reading()
+            reading = dexcom.get_current_glucose_reading()
+            # immer nur den neuesten Wert behalten
+            while not reading_queue.empty():
+                try:
+                    reading_queue.get_nowait()
+                except queue.Empty:
+                    break
+            reading_queue.put(reading)
+            error_counter = 0
         except Exception as e:
-            result["error"] = e
-
-    thread = threading.Thread(target=target)
-    thread.start()
-    thread.join(timeout_seconds)
-    if thread.is_alive():
-        raise TimeoutError("Dexcom request timed out.")
-    if "error" in result:
-        raise result["error"]
-    return result["reading"]
+            print(f"Worker Error: {e}")
+            error_counter += 1
+            # nach drei Fehlern neu verbinden
+            if error_counter >= 3:
+                print("Reconnecting Dexcom...")
+                try:
+                    dexcom = Dexcom(username=username, password=password, region=region)
+                    print("Reconnect successful")
+                except Exception as e2:
+                    print("Reconnect failed:", e2)
+                error_counter = 0
+        # exakt fünf Minuten warten
+        for _ in range(150):
+            if not worker_running:
+                return
+            time.sleep(1)
 
 def prediction(wert, current_time):
     global last_alarm_time
@@ -106,17 +126,33 @@ def math_problem():
         except ValueError:
             print("Please enter a valid number!")
     print("Paused Alarm")
-def set_alarm():
+
+def alarm_worker():
+    global alarm_active
     stop_alarm.clear()
-    threading.Thread(target=play_alarm, daemon=True).start()
+    sound_thread = threading.Thread(target=play_alarm, daemon=True)
+    sound_thread.start()
     math_problem()
+    alarm_active = False
+
+def set_alarm():
+    global alarm_active
+    if alarm_active:
+        return
+    alarm_active = True
+    threading.Thread(target=alarm_worker, daemon=True).start()
 
 def update(frame):
     global last_alarm_time
     global LOW_THRESHOLD
     global COOLDOWN_SECONDS
     try:
-        reading = get_glucose_reading_with_timeout()
+        try:
+    	    reading = reading_queue.get_nowait()
+        except queue.Empty:
+            zeit = datetime.now().strftime("%H:%M:%S")
+            print(f"[{zeit}] No new reading available.")
+            return
         wert = reading.value
         zeit = datetime.now().strftime("%H:%M:%S")
         werte.append(wert)
@@ -148,9 +184,17 @@ def update(frame):
             print(f"[{zeit}] Error while reading data. Your internet may have disconnected.")
 
 if __name__ == "__main__":
+    threading.Thread(target=glucose_worker, daemon=True).start()
+    print("Worker started")
+    for i in range(10):
+        time.sleep(1)
+        p=10-i
+        print(f"Wait {p} seconds for booting")
+        i=i-1
     fig, ax = plt.subplots()
-    ani = animation.FuncAnimation(fig, update, interval=300000)  # 5 Minuten = 300000 ms
+    ani = animation.FuncAnimation(fig, update, interval=300000, cache_frame_data=False)  # 5 Minuten = 300000 ms
     plt.show()
+    worker_running = False	
     datum = datetime.now().strftime("%Y-%m-%d")
     filename = BASE_DIR / f"CGM Daten/cgm_diagramm_{datum}.png"
     counter = 1
