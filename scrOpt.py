@@ -47,7 +47,6 @@ def glucose_worker():
     while worker_running:
         try:
             reading = dexcom.get_current_glucose_reading()
-            # immer nur den neuesten Wert behalten
             while not reading_queue.empty():
                 try:
                     reading_queue.get_nowait()
@@ -58,7 +57,6 @@ def glucose_worker():
         except Exception as e:
             print(f"Worker Error: {e}")
             error_counter += 1
-            # nach drei Fehlern neu verbinden
             if error_counter >= 3:
                 print("Reconnecting Dexcom...")
                 try:
@@ -67,7 +65,6 @@ def glucose_worker():
                 except Exception as e2:
                     print("Reconnect failed:", e2)
                 error_counter = 0
-        # exakt fünf Minuten warten
         for _ in range(150):
             if not worker_running:
                 return
